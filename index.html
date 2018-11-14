@@ -1,0 +1,36 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>News app</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="./src/css/index.css"
+        />
+        <script src="./dist/bundle.js" defer></script>
+    </head>
+    <body>
+        <div class="container">
+            <header></header>
+            <main class="main" id="app">
+                <section class="sources" id="sources">
+                    <div class="selected-sources" id="selected-sources"></div>
+                    <div class="source-drop-down" id="source-drop-down"></div>
+                </section>
+                <section id="news" class="news"></section>
+            </main>
+            <footer class="footer">
+                <p>
+                    Powered by
+                    <a href="https://newsapi.org" target="_blank">
+                        newsapi.org
+                    </a>
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>
