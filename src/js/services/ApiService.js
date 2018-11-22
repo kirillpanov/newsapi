@@ -1,3 +1,5 @@
+import { fetch } from "whatwg-fetch";
+
 const apiKey = "18bc004995294223a2d658b2067ac6a2";
 const getSourcesUrl = key => `https://newsapi.org/v2/sources?apiKey=${key}`;
 const getNewsUrl = (key, source) =>
