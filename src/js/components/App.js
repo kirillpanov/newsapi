@@ -2,6 +2,8 @@ import { Source } from "./Source";
 import { SourceDropDown } from "./SourceDropDown";
 import { NewsComponent } from "./NewsComponent";
 
+import "../../css/main.css";
+
 export class App {
     constructor(apiService) {
         this.apiService = apiService;
