@@ -6,7 +6,7 @@ const config = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js",
-        chunkFilename: "./chunks/[name].js",
+        chunkFilename: "[name].bundle.js",
         publicPath: "dist"
     },
     module: {
