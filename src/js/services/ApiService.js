@@ -1,13 +1,10 @@
 import { RequestFactory } from "./RequestFactory";
-
-const apiKey = "18bc004995294223a2d658b2067ac6a2";
-const getSourcesUrl = key => `https://newsapi.org/v2/sources?apiKey=${key}`;
-const getNewsUrl = (key, source) =>
-    `https://newsapi.org/v2/top-headlines?sources=${source}&apiKey=${key}`;
+import { apiKey } from "../constants/index";
+import { traceRequestCalls, getNewsUrl, getSourcesUrl } from "../utils/index";
 
 export class ApiService {
     constructor() {
-        this.requestFactory = new RequestFactory();
+        this.requestFactory = traceRequestCalls(new RequestFactory());
     }
 
     get sources() {
