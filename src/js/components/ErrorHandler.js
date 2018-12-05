@@ -9,7 +9,6 @@ export class ErrorHandler {
     }
 
     showPopUp() {
-        console.log(this.error);
         this.popUp.showPopUp(this.error);
     }
 }
