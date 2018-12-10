@@ -1,15 +1,14 @@
 import { Source } from "./Source";
 import { SourceDropDown } from "./SourceDropDown";
 import { NewsComponent } from "./NewsComponent";
+import { ErrorHandler } from "./ErrorHandler";
 
 import "../../css/main.css";
 
 export class App {
     constructor(apiService) {
         this.apiService = apiService;
-        this.selectedSourcesElement = document.getElementById(
-            "selected-sources"
-        );
+        this.selectedSourcesElement = document.getElementById("selected-sources");
         this._selectedSources = [];
         this.sourceTags = [];
         this.sourceDropDown = new SourceDropDown();
@@ -18,9 +17,7 @@ export class App {
 
     get selectedSources() {
         if (this.sources) {
-            this._selectedSources = this.sources.filter(
-                ({ selected }) => selected
-            );
+            this._selectedSources = this.sources.filter(({ selected }) => selected);
         }
         return this._selectedSources;
     }
@@ -41,21 +38,22 @@ export class App {
         this.apiService.sources
             .then(({ sources }) => {
                 this.sources = sources.map(source =>
-                    // Object.assign is used instead of spread
-                    // because of webpack issue https://github.com/webpack/webpack/issues/5548
                     Object.assign({}, source, { selected: false })
                 );
             })
+            // .then(() => {
+            //     if (this.sources.length > 5) {
+            //         throw Error("too many sources");
+            //     }
+            // })
             .then(() => this.observeAppMutation())
             .then(() => this.renderSources())
-            .catch(_ => this.renderSources());
+            .catch(error => new ErrorHandler(error));
     }
 
     observeAppMutation() {
         const appElement = document.getElementById("sources");
-        const observer = new MutationObserver(() =>
-            this.addSelectionListeners()
-        );
+        const observer = new MutationObserver(() => this.addSelectionListeners());
         const config = { attributes: true, childList: true, subtree: true };
         observer.observe(appElement, config);
     }
@@ -82,17 +80,9 @@ export class App {
         if (this.selectedSources.length) {
             this.apiService
                 .getNews(this.selectedSources)
-                .then(news =>
-                    news.reduce(
-                        (news, { articles }) => [...news, ...articles],
-                        []
-                    )
-                )
+                .then(news => news.reduce((news, { articles }) => [...news, ...articles], []))
                 .then(newsList =>
-                    newsList.sort(
-                        (a, b) =>
-                            new Date(a.publishedAt) - new Date(b.publishedAt)
-                    )
+                    newsList.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt))
                 )
                 .then(newsList => this.newsComponent.updateNews(newsList));
         } else {
@@ -113,9 +103,7 @@ export class App {
         if (this.sourceTags.length) {
             const unselectButtonSelector = `[${this.sourceTags[0].selector}]`;
 
-            const unselectButtons = [
-                ...document.querySelectorAll(unselectButtonSelector)
-            ];
+            const unselectButtons = [...document.querySelectorAll(unselectButtonSelector)];
 
             if (unselectButtons.length) {
                 unselectButtons.forEach(button =>
